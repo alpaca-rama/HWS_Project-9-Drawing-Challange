@@ -14,11 +14,34 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+struct Arrow: Shape {
+    var headHeight = 0.5
+    var shaftWidth = 0.3
+    
+    func path(in rect: CGRect) -> Path {
+        let height = rect.height * headHeight
+        let thickness = rect.width * shaftWidth / 2
+        
+        return Path { path in
+            path.move(to: CGPoint(x: 0, y: height))
+            path.addLine(to: CGPoint(x: rect.midX, y: 0))
+            path.addLine(to: CGPoint(x: rect.maxX, y: height))
+            path.addLine(to: CGPoint(x: rect.midX + thickness, y: height))
+            path.addLine(to: CGPoint(x: rect.midX + thickness, y: rect.maxY))
+            path.addLine(to: CGPoint(x: rect.midX - thickness, y: rect.maxY))
+            path.addLine(to: CGPoint(x: rect.midX - thickness, y: height))
+            
+            path.closeSubpath()
+            
+        }
     }
+}
+
+    struct ContentView: View {
+        var body: some View {
+            Arrow()
+                .fill(.blue)
+        }
 }
 
 struct ContentView_Previews: PreviewProvider {
