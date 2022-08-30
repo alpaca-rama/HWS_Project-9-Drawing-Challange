@@ -4,19 +4,30 @@
 //
 //  Created by Luca Capriati on 2022/08/30.
 //
-// Challange 1 - Create an Arrow shape – having it point straight up is fine. This could be a
+// Project 9 - Challange 1 - Create an Arrow shape – having it point straight up is fine. This could be a
 //  rectangle/triangle-style arrow, or perhaps three lines, or maybe something else depending on
 //  what kind of arrow you want to draw.
-// Challange 2 - Make the line thickness of your Arrow shape animatable.
-// Challange 3 - Create a ColorCyclingRectangle shape that is the rectangular cousin of
+// Project 9 - Challange 2 - Make the line thickness of your Arrow shape animatable.
+// Project 9 - Challange 3 - Create a ColorCyclingRectangle shape that is the rectangular cousin of
 //  ColorCyclingCircle, allowing us to control the position of the gradient using one or more
 //  properties.
 
 import SwiftUI
 
+// Project 9 - Challange 1
 struct Arrow: Shape {
     var headHeight = 0.5
     var shaftWidth = 0.3
+    
+    // Project 9 - Challange 2
+    var animatableData: AnimatablePair<Double, Double> {
+        get { AnimatablePair(headHeight, shaftWidth) }
+        set {
+            headHeight = newValue.first
+            shaftWidth = newValue.second
+            
+        }
+    }
     
     func path(in rect: CGRect) -> Path {
         let height = rect.height * headHeight
@@ -38,9 +49,20 @@ struct Arrow: Shape {
 }
 
     struct ContentView: View {
+        // Project 9 - Challange 2
+        @State private var headHeight = 0.5
+        @State private var shaftWidth = 0.25
+        
         var body: some View {
-            Arrow()
-                .fill(.blue)
+            // Project 9 - Challange 2
+            Arrow(headHeight: headHeight, shaftWidth: shaftWidth)
+                .fill(.indigo)
+                .onTapGesture {
+                    withAnimation {
+                        headHeight = Double.random(in: 0.2...0.8)
+                        shaftWidth = Double.random(in: 0.2...0.8)
+                    }
+                }
         }
 }
 
